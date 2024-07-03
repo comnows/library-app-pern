@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
+import { query } from "../db";
 
-const getAllBooks = (req: Request, res: Response) => {
-  console.log(req, res);
-  res.send("get all books");
+const getAllBooks = async (req: Request, res: Response) => {
+  const results = await query("SELECT * FROM book");
+
+  console.log(results);
+  res.status(200).json({
+    data: {},
+  });
 };
 const getBook = (req: Request, res: Response) => {
   console.log(req, res);
