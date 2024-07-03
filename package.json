@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc --watch",
     "start:backend": "node dist/index.js",
-    "watch:backend": "node --watch dist/index.js",
+    "watch:backend": "nodemon dist/index.js",
+    "dev:backend": "concurrently \"npm run watch\" \"npm run watch:backend\"",
     "build:backend": "tsc",
     "prepare": "husky"
   },
@@ -24,6 +25,7 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
+    "nodemon": "^3.1.4",
     "prettier": "^3.3.2",
     "typescript": "^5.5.2"
   },
