@@ -43,11 +43,11 @@ const getBook = async (req: Request, res: Response) => {
 };
 
 const createBook = async (req: Request, res: Response) => {
-  const { name, type } = req.body;
+  const { name, classes, year, writer, publisher } = req.body;
   try {
     const results = await query(
-      "INSERT INTO book(name, type) VALUES($1, $2) RETURNING *",
-      [name, type],
+      "INSERT INTO book(name, classes, year, writer, publisher) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      [name, classes, year, writer, publisher],
     );
 
     console.log(results);
@@ -68,11 +68,11 @@ const createBook = async (req: Request, res: Response) => {
 };
 
 const updateBook = async (req: Request, res: Response) => {
-  const { name, type } = req.body;
+  const { name, classes, year, writer, publisher } = req.body;
   try {
     const results = await query(
-      "UPDATE book SET name = $1, type = $2 WHERE id = $3 RETURNING *",
-      [name, type, req.params.id],
+      "UPDATE book SET name = $1, classes = $2, year = $3 writer = $4, publisher = $5 WHERE id = $6 RETURNING *",
+      [name, classes, year, writer, publisher, req.params.id],
     );
 
     res.status(StatusCodes.OK).json({
