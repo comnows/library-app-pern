@@ -71,7 +71,7 @@ const updateBook = async (req: Request, res: Response) => {
   const { name, classes, year, writer, publisher } = req.body;
   try {
     const results = await query(
-      "UPDATE book SET name = $1, classes = $2, year = $3 writer = $4, publisher = $5 WHERE id = $6 RETURNING *",
+      "UPDATE book SET name = $1, classes = $2, year = $3, writer = $4, publisher = $5 WHERE id = $6 RETURNING *",
       [name, classes, year, writer, publisher, req.params.id],
     );
 
