@@ -43,11 +43,12 @@ const getMember = async (req: Request, res: Response) => {
 };
 
 const createMember = async (req: Request, res: Response) => {
-  const { firstname, lastname, gender, age } = req.body;
+  const { id, firstname, lastname, email, phone, gender, dateOfBirth } =
+    req.body;
   try {
     const results = await query(
-      "INSERT INTO member(first_name, last_name, gender, age) VALUES($1, $2, $3, $4) RETURNING *",
-      [firstname, lastname, gender, age],
+      "INSERT INTO member(id, first_name, last_name, email, phone_number, gender, date_of_birth) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [id, firstname, lastname, email, phone, gender, dateOfBirth],
     );
 
     console.log(results);
@@ -68,11 +69,21 @@ const createMember = async (req: Request, res: Response) => {
 };
 
 const updateMember = async (req: Request, res: Response) => {
-  const { firstname, lastname, gender, age } = req.body;
+  const { id, firstname, lastname, email, phone, gender, dateOfBirth } =
+    req.body;
   try {
     const results = await query(
-      "UPDATE member SET first_name = $1, last_name = $2, gender = $3, age = $4 WHERE id = $5 RETURNING *",
-      [firstname, lastname, gender, age, req.params.id],
+      "UPDATE member SET id = $1, first_name = $2, last_name = $3, email = $4, phone_number = $5, gender = $6, date_of_birth = $7 WHERE id = $8 RETURNING *",
+      [
+        id,
+        firstname,
+        lastname,
+        email,
+        phone,
+        gender,
+        dateOfBirth,
+        req.params.id,
+      ],
     );
 
     res.status(StatusCodes.OK).json({
