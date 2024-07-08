@@ -42,6 +42,28 @@ const getLendList = async (req: Request, res: Response) => {
   }
 };
 
+const getLendListByBookId = async (req: Request, res: Response) => {
+  try {
+    const results = await query(
+      "SELECT * FROM lend_list WHERE book_id = $1 AND returned_date IS NULL",
+      [req.params.id],
+    );
+
+    res.status(StatusCodes.OK).json({
+      data: {
+        lists: results.rows,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(StatusCodes.BAD_GATEWAY).json({
+      data: {
+        error: "Something went wrong, please try again",
+      },
+    });
+  }
+};
+
 const createLendList = async (req: Request, res: Response) => {
   const { bookId, memberId } = req.body;
   try {
@@ -70,7 +92,7 @@ const createLendList = async (req: Request, res: Response) => {
 const updateLendListReturnDate = async (req: Request, res: Response) => {
   try {
     const results = await query(
-      "UPDATE lend_list SET return_date = CURRENT_DATE WHERE id = $1 RETURNING *",
+      "UPDATE lend_list SET returned_date = CURRENT_DATE WHERE id = $1 RETURNING *",
       [req.params.id],
     );
 
@@ -109,6 +131,7 @@ const deleteLendList = async (req: Request, res: Response) => {
 export {
   getAllLendLists,
   getLendList,
+  getLendListByBookId,
   createLendList,
   updateLendListReturnDate,
   deleteLendList,

@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/api/v1/books", booksRouter);
 app.use("/api/v1/classes", booksClassesRouter);
 app.use("/api/v1/members", membersRouter);
-app.use("/api/v1/lend", lendRouter);
+app.use("/api/v1/lend-lists", lendRouter);
 
 app.listen(port, () => {
   console.log(`Server is listening to port ${port}...`);
