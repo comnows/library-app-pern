@@ -4,7 +4,7 @@ import { IoPersonOutline, IoBookOutline } from "react-icons/io5";
 
 function Sidebar() {
   return (
-    <div className="fixed left-0 inset-y-0 pt-16 w-[240px]">
+    <div className="fixed bg-white left-0 inset-y-0 pt-16 w-[240px]">
       <div className="flex flex-col p-3">
         <SidebarLink>
           <SidebarIcon>
