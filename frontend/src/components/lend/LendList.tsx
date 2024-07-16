@@ -1,4 +1,24 @@
+import { useEffect } from "react";
+import { fetchLendLists } from "../../api";
+import { useLendListContext } from "../../hooks/UseLendListContext";
+import { formatDate } from "../../utils/DateFormat";
+
 function LendList() {
+  const { lendLists, setLendLists } = useLendListContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchLendLists();
+
+        setLendLists(response.data.data.lists);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [setLendLists]);
+
   return (
     <div className="mx-6 mt-6">
       <table className="w-full rounded-t-xl overflow-hidden">
@@ -13,30 +33,25 @@ function LendList() {
           </tr>
         </thead>
         <tbody className="border">
-          <tr className="border-b hover:bg-black/5">
-            <td className="py-3 px-5">1</td>
-            <td className="py-3 px-5">ABC: The journey of the world</td>
-            <td className="py-3 px-5">John Doe</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-          </tr>
-          <tr className="border-b">
-            <td className="py-3 px-5">1</td>
-            <td className="py-3 px-5">ABC: The journey of the world</td>
-            <td className="py-3 px-5">John Doe</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-          </tr>
-          <tr className="border-b">
-            <td className="py-3 px-5">1</td>
-            <td className="py-3 px-5">ABC: The journey of the world</td>
-            <td className="py-3 px-5">John Doe</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-            <td className="py-3 px-5">01/01/2000</td>
-          </tr>
+          {lendLists &&
+            lendLists.map((lendList) => {
+              return (
+                <tr key={lendList.id} className="border-b hover:bg-black/5">
+                  <td className="py-3 px-5">{lendList.id}</td>
+                  <td className="py-3 px-5">{lendList.book_id}</td>
+                  <td className="py-3 px-5">{lendList.member_id}</td>
+                  <td className="py-3 px-5">
+                    {formatDate(lendList.created_at)}
+                  </td>
+                  <td className="py-3 px-5">{formatDate(lendList.due_date)}</td>
+                  <td className="py-3 px-5">
+                    {lendList.returned_date
+                      ? formatDate(lendList.returned_date)
+                      : "-"}
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>
