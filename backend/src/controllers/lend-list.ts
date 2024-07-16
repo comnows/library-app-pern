@@ -4,7 +4,9 @@ import { query } from "../db";
 
 const getAllLendLists = async (req: Request, res: Response) => {
   try {
-    const results = await query("SELECT * FROM lend_list");
+    const results = await query(
+      "SELECT lend_list.id, book.name AS book_name, member.first_name, member.last_name, lend_list.created_at, lend_list.due_date, lend_list.returned_date FROM lend_list JOIN book ON lend_list.book_id = book.id JOIN member ON lend_list.member_id = member.id ORDER BY lend_list.id",
+    );
 
     res.status(StatusCodes.OK).json({
       data: {
