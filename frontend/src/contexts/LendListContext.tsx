@@ -3,8 +3,9 @@ import { ChildrenType } from "../lib/types";
 
 type LendListType = {
   id: number;
-  book_id: number;
-  member_id: number;
+  book_name: string;
+  first_name: string;
+  last_name: string;
   created_at: Date;
   due_date: Date;
   returned_date: Date | null;

@@ -10,6 +10,7 @@ function LendList() {
     const fetchData = async () => {
       try {
         const response = await fetchLendLists();
+        console.log(response);
 
         setLendLists(response.data.data.lists);
       } catch (error) {
@@ -38,8 +39,8 @@ function LendList() {
               return (
                 <tr key={lendList.id} className="border-b hover:bg-black/5">
                   <td className="py-3 px-5">{lendList.id}</td>
-                  <td className="py-3 px-5">{lendList.book_id}</td>
-                  <td className="py-3 px-5">{lendList.member_id}</td>
+                  <td className="py-3 px-5">{lendList.book_name}</td>
+                  <td className="py-3 px-5">{`${lendList.first_name} ${lendList.last_name}`}</td>
                   <td className="py-3 px-5">
                     {formatDate(lendList.created_at)}
                   </td>
