@@ -70,7 +70,7 @@ const createLendList = async (req: Request, res: Response) => {
   const { bookId, memberId } = req.body;
   try {
     const results = await query(
-      "INSERT INTO lend_list(book_id, member_id) VALUES($1, $2) RETURNING *",
+      "WITH new_lend AS (INSERT INTO lend_list(book_id, member_id) VALUES($1, $2) RETURNING *) SELECT new_lend.id, book.name AS book_name, member.first_name, member.last_name, new_lend.created_at, new_lend.due_date, new_lend.returned_date FROM new_lend JOIN book ON new_lend.book_id = book.id JOIN member ON new_lend.member_id = member.id",
       [bookId, memberId],
     );
 
