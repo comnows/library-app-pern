@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { fetchLendLists } from "../../api";
+import { deleteLendList, fetchLendLists } from "../../api";
 import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
 import { LuFileClock } from "react-icons/lu";
-import { FaRegTrashCan } from "react-icons/fa6";
+import DeleteButton from "../general/form/DeleteButton";
 
 function LendList() {
   const { lendLists, setLendLists } = useLendListContext();
@@ -12,7 +12,6 @@ function LendList() {
     const fetchData = async () => {
       try {
         const response = await fetchLendLists();
-        console.log(response);
 
         setLendLists(response.data.data.lists);
       } catch (error) {
@@ -21,6 +20,19 @@ function LendList() {
     };
     fetchData();
   }, [setLendLists]);
+
+  const handleDeleteClick = async (id: number) => {
+    try {
+      await deleteLendList(id);
+      setLendLists(
+        lendLists.filter((lendList) => {
+          return lendList.id !== id;
+        }),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="mx-6 mt-6">
@@ -57,9 +69,9 @@ function LendList() {
                     <button className="group bg-white hover:bg-green-500 border border-green-500 rounded p-1">
                       <LuFileClock className="text-green-500 group-hover:text-white text-xl" />
                     </button>
-                    <button className="group bg-white hover:bg-red-600 border border-red-600 rounded p-1 ml-2">
-                      <FaRegTrashCan className="text-red-600 group-hover:text-white text-xl" />
-                    </button>
+                    <DeleteButton
+                      onClick={() => handleDeleteClick(lendList.id)}
+                    />
                   </td>
                 </tr>
               );
