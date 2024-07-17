@@ -1,7 +1,10 @@
 import React from "react";
 
-type ChildrenType = {
+export type ChildrenType = {
   children: React.ReactNode;
 };
 
-export type { ChildrenType };
+export type LendInfoType = {
+  memberId: string;
+  bookId: number;
+};

@@ -1,9 +1,5 @@
 import axios from "axios";
-
-type LendInfoType = {
-  bookId: number;
-  memberId: number;
-};
+import { LendInfoType } from "../lib/types";
 
 const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
 
