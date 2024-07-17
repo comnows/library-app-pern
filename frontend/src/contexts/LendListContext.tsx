@@ -1,15 +1,6 @@
 import { createContext, useState } from "react";
 import { ChildrenType } from "../lib/types";
-
-type LendListType = {
-  id: number;
-  book_name: string;
-  first_name: string;
-  last_name: string;
-  created_at: Date;
-  due_date: Date;
-  returned_date: Date | null;
-}[];
+import { LendListType } from "../lib/types";
 
 type LendListContextType = {
   lendLists: LendListType;
