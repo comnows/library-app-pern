@@ -1,9 +1,6 @@
-type ButtonProps = {
-  name: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-};
+import { ButtonType } from "../../../lib/types";
 
-function FormButton({ name, onClick }: ButtonProps) {
+function FormButton({ name, onClick }: ButtonType) {
   return (
     <button
       onClick={onClick}
