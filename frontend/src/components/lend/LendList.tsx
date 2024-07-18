@@ -1,17 +1,12 @@
 import { useEffect } from "react";
-import {
-  deleteLendList,
-  fetchLendLists,
-  updateLendListReturnDate,
-} from "../../api";
+import { deleteLendList, fetchLendLists } from "../../api";
 import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
 import UpdateButton from "../general/form/UpdateButton";
 import DeleteButton from "../general/form/DeleteButton";
-import { LendListType } from "../../lib/types";
 
 function LendList() {
-  const { lendLists, setLendLists } = useLendListContext();
+  const { lendLists, setLendLists, updateLendList } = useLendListContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,25 +20,6 @@ function LendList() {
     };
     fetchData();
   }, [setLendLists]);
-
-  const handleUpdateClick = async (id: number) => {
-    try {
-      const response = await updateLendListReturnDate(id);
-
-      const updatedLendLists: LendListType = lendLists.map((lend) =>
-        lend.id === id
-          ? {
-              ...lend,
-              returned_date: response.data.data.lists[0].returned_date,
-            }
-          : lend,
-      );
-
-      setLendLists(updatedLendLists);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleDeleteClick = async (id: number) => {
     try {
@@ -90,9 +66,7 @@ function LendList() {
                       : "-"}
                   </td>
                   <td className="py-3 px-5">
-                    <UpdateButton
-                      onClick={() => handleUpdateClick(lendList.id)}
-                    />
+                    <UpdateButton onClick={() => updateLendList(lendList.id)} />
                     <DeleteButton
                       onClick={() => handleDeleteClick(lendList.id)}
                     />
