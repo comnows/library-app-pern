@@ -36,6 +36,7 @@ function AddLendListForm() {
     if (fetchListData.length > 0) {
       if (lendInfo.memberId === "") {
         updateLendList(fetchListData[0].id);
+        clearInput();
         return;
       } else {
         alert("This book was lent, remove member id to return the book");
@@ -54,9 +55,17 @@ function AddLendListForm() {
       const response = await addLendList(lendInfo);
 
       setLendLists((current) => [...current, response.data.data.lists[0]]);
+      clearInput();
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const clearInput = () => {
+    setLendInfo({
+      memberId: "",
+      bookId: null!,
+    });
   };
 
   return (
