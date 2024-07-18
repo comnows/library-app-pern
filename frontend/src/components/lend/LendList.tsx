@@ -66,7 +66,11 @@ function LendList() {
                       : "-"}
                   </td>
                   <td className="py-3 px-5">
-                    <UpdateButton onClick={() => updateLendList(lendList.id)} />
+                    {!lendList.returned_date && (
+                      <UpdateButton
+                        onClick={() => updateLendList(lendList.id)}
+                      />
+                    )}
                     <DeleteButton
                       onClick={() => handleDeleteClick(lendList.id)}
                     />

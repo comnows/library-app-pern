@@ -5,7 +5,7 @@ function UpdateButton({ onClick }: ButtonType) {
   return (
     <button
       onClick={onClick}
-      className="group bg-white hover:bg-green-500 border border-green-500 rounded p-1"
+      className="group bg-white hover:bg-green-500 border border-green-500 rounded p-1 mr-2"
     >
       <LuFileClock className="text-green-500 group-hover:text-white text-xl" />
     </button>

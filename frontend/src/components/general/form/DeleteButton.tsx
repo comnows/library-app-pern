@@ -5,7 +5,7 @@ function DeleteButton({ onClick }: ButtonType) {
   return (
     <button
       onClick={onClick}
-      className="group bg-white hover:bg-red-600 border border-red-600 rounded p-1 ml-2"
+      className="group bg-white hover:bg-red-600 border border-red-600 rounded p-1"
     >
       <FaRegTrashCan className="text-red-600 group-hover:text-white text-xl" />
     </button>
