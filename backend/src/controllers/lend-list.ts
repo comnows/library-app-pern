@@ -2,11 +2,24 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { query } from "../db";
 
+type QueryObjectType = {
+  orderBy: "DESC" | "ASC";
+  operator: "<" | ">";
+};
+
 const getAllLendLists = async (req: Request, res: Response) => {
+  const { id, option } = req.query;
+  const queryObject: QueryObjectType = { orderBy: "ASC", operator: ">" };
+
+  if (option) {
+    queryObject.orderBy = option === "prev" ? "DESC" : "ASC";
+    queryObject.operator = option === "prev" ? "<" : ">";
+  }
+
+  const queryString = `SELECT lend_list.id, book.name AS book_name, member.first_name, member.last_name, lend_list.created_at, lend_list.due_date, lend_list.returned_date, COUNT(*) OVER() AS count FROM lend_list JOIN book ON lend_list.book_id = book.id JOIN member ON lend_list.member_id = member.id WHERE lend_list.id ${queryObject.operator} COALESCE($1, 0) ORDER BY lend_list.id ${queryObject.orderBy} LIMIT 20`;
+
   try {
-    const results = await query(
-      "SELECT lend_list.id, book.name AS book_name, member.first_name, member.last_name, lend_list.created_at, lend_list.due_date, lend_list.returned_date FROM lend_list JOIN book ON lend_list.book_id = book.id JOIN member ON lend_list.member_id = member.id ORDER BY lend_list.id",
-    );
+    const results = await query(queryString, [id]);
 
     res.status(StatusCodes.OK).json({
       data: {

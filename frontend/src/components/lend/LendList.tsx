@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { deleteLendList, fetchLendLists } from "../../api";
 import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
 import UpdateButton from "../general/form/UpdateButton";
 import DeleteButton from "../general/form/DeleteButton";
+import ListPageButton from "./ListPageButton";
 
 function LendList() {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
   const { lendLists, setLendLists, updateLendList } = useLendListContext();
 
   useEffect(() => {
@@ -14,12 +17,13 @@ function LendList() {
         const response = await fetchLendLists();
 
         setLendLists(response.data.data.lists);
+        setTotalItems(response.data.data.lists[0].count);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [setLendLists]);
+  }, [setLendLists, setTotalItems]);
 
   const handleDeleteClick = async (id: number) => {
     try {
@@ -32,6 +36,16 @@ function LendList() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handlePrevClick = async (id: number) => {
+    console.log(id);
+    setCurrentPage((current) => current - 1);
+  };
+
+  const handleNextClick = async (id: number) => {
+    console.log(id);
+    setCurrentPage((current) => current + 1);
   };
 
   return (
@@ -80,6 +94,20 @@ function LendList() {
             })}
         </tbody>
       </table>
+      <div className="flex justify-end gap-2 mt-2">
+        {currentPage > 1 && (
+          <ListPageButton
+            name="Prev"
+            onClick={() => handlePrevClick(lendLists[0].id)}
+          />
+        )}
+        {totalItems > 20 && (
+          <ListPageButton
+            name="Next"
+            onClick={() => handleNextClick(lendLists[lendLists.length - 1].id)}
+          />
+        )}
+      </div>
     </div>
   );
 }
