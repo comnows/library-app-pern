@@ -1,31 +1,43 @@
-// import { useState } from "react";
+import { useState } from "react";
 import { fetchLendLists } from "../../api";
 // import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
 import UpdateButton from "../general/form/UpdateButton";
 import DeleteButton from "../general/form/DeleteButton";
-// import ListPageButton from "./ListPageButton";
-import { useQuery } from "@tanstack/react-query";
+import ListPageButton from "./ListPageButton";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { LendListsQueries } from "../../lib/types";
 
 function LendList() {
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [totalItems, setTotalItems] = useState<number>(0);
-  // const { lendLists } = useLendListContext();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { data } = useQuery({
-    queryKey: ["lendLists"],
-    queryFn: fetchLendLists,
+  const [queryObject, setQueryObject] = useState<LendListsQueries>({
+    id: 0,
   });
 
-  // const handlePrevClick = async (id: number) => {
-  //   console.log(id);
-  //   setCurrentPage((current) => current - 1);
-  // };
+  const { data } = useQuery({
+    queryKey: ["lendLists", queryObject],
+    queryFn: () => fetchLendLists(queryObject),
+    placeholderData: keepPreviousData,
+  });
 
-  // const handleNextClick = async (id: number) => {
-  //   console.log(id);
-  //   setCurrentPage((current) => current + 1);
-  // };
+  const handlePrevClick = async (id: number) => {
+    console.log(id);
+    setCurrentPage((current) => current - 1);
+    setQueryObject({
+      id: id,
+      option: "prev",
+    });
+  };
+
+  const handleNextClick = async (id: number) => {
+    console.log(id);
+    setCurrentPage((current) => current + 1);
+    setQueryObject({
+      id: id,
+      option: "next",
+    });
+  };
 
   return (
     <div className="mx-6 mt-6">
@@ -64,20 +76,24 @@ function LendList() {
           })}
         </tbody>
       </table>
-      {/* <div className="flex justify-end gap-2 mt-2">
+      <div className="flex justify-end gap-2 mt-2">
         {currentPage > 1 && (
           <ListPageButton
             name="Prev"
-            onClick={() => handlePrevClick(lendLists[0].id)}
+            onClick={() => {
+              data && handlePrevClick(data[0].id);
+            }}
           />
         )}
-        {totalItems > 20 && (
+        {data && data[0].count && data[0].count > 5 && (
           <ListPageButton
             name="Next"
-            onClick={() => handleNextClick(lendLists[lendLists.length - 1].id)}
+            onClick={() => {
+              data && handleNextClick(data[data.length - 1].id);
+            }}
           />
         )}
-      </div> */}
+      </div>
     </div>
   );
 }

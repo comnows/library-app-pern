@@ -1,15 +1,15 @@
 import axios from "axios";
-import { LendInfoType, LendListType } from "../lib/types";
-
-// type LendListsQueries = {
-//   id?: number;
-//   option?: "prev" | "next";
-// }
+import { LendInfoType, LendListsQueries, LendListType } from "../lib/types";
 
 const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
 
-export const fetchLendLists = (): Promise<LendListType> =>
-  api.get("/lend-lists").then((response) => response.data.data.lists);
+export const fetchLendLists = ({
+  id,
+  option,
+}: LendListsQueries): Promise<LendListType> =>
+  api
+    .get("/lend-lists", { params: { id: id, option: option } })
+    .then((response) => response.data.data.lists);
 
 export const addLendList = (lendInfo: LendInfoType) =>
   api.post("/lend-lists", lendInfo);

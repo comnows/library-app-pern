@@ -4,6 +4,11 @@ export type ChildrenType = {
   children: React.ReactNode;
 };
 
+export type LendListsQueries = {
+  id?: number;
+  option?: "prev" | "next";
+};
+
 export type LendListType = {
   id: number;
   book_name: string;
@@ -12,6 +17,7 @@ export type LendListType = {
   created_at: Date;
   due_date: Date;
   returned_date: Date | null;
+  count?: number;
 }[];
 
 export type LendInfoType = {

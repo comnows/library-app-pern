@@ -16,7 +16,39 @@ const getAllLendLists = async (req: Request, res: Response) => {
     queryObject.operator = option === "prev" ? "<" : ">";
   }
 
-  const queryString = `SELECT lend_list.id, book.name AS book_name, member.first_name, member.last_name, lend_list.created_at, lend_list.due_date, lend_list.returned_date, COUNT(*) OVER() AS count FROM lend_list JOIN book ON lend_list.book_id = book.id JOIN member ON lend_list.member_id = member.id WHERE lend_list.id ${queryObject.operator} COALESCE($1, 0) ORDER BY lend_list.id ${queryObject.orderBy} LIMIT 20`;
+  const queryString = `WITH PageResult AS (
+                        SELECT 
+                          lend_list.id, 
+                          book.name AS book_name, 
+                          member.first_name, 
+                          member.last_name, 
+                          lend_list.created_at, 
+                          lend_list.due_date, 
+                          lend_list.returned_date
+                        FROM lend_list 
+                        JOIN book ON lend_list.book_id = book.id 
+                        JOIN member ON lend_list.member_id = member.id 
+                        WHERE lend_list.id ${queryObject.operator} COALESCE($1, 0) 
+                        ORDER BY lend_list.id ${queryObject.orderBy} 
+                        LIMIT 5
+                        ),
+                        CountNext AS (
+                          SELECT COUNT(*) AS count
+                          FROM lend_list
+                          WHERE lend_list.id > (SELECT MIN(id) FROM PageResult)
+                        )
+                        SELECT
+                          pr.id,
+                          pr.book_name,
+                          pr.first_name,
+                          pr.last_name,
+                          pr.created_at,
+                          pr.due_date,
+                          pr.returned_date,
+                          cn.count
+                      FROM PageResult pr
+                      CROSS JOIN CountNext cn
+                      ORDER BY pr.id`;
 
   try {
     const results = await query(queryString, [id]);
