@@ -3,7 +3,8 @@ import FormButton from "../general/form/FormButton";
 import FormInput from "../general/form/FormInput";
 import { addLendList, fetchLendListByBookId } from "../../api";
 import { LendInfoType, LendListType } from "../../lib/types";
-import { useLendListContext } from "../../hooks/UseLendListContext";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useUpdateReturnDateMutation } from "./mutations";
 
 function AddLendListForm() {
   const [lendInfo, setLendInfo] = useState<LendInfoType>({
@@ -11,7 +12,26 @@ function AddLendListForm() {
     bookId: null!,
   });
 
-  const { setLendLists, updateLendList } = useLendListContext();
+  const queryClient = useQueryClient();
+
+  const { refetch } = useQuery({
+    queryKey: ["lend", lendInfo.bookId],
+    queryFn: () => fetchLendListByBookId(lendInfo.bookId),
+    enabled: false,
+  });
+
+  const updateReturnDateMutation = useUpdateReturnDateMutation();
+
+  const addLendListMutation = useMutation({
+    mutationFn: (info: LendInfoType) => addLendList(info),
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["lendLists"] });
+      }
+    },
+  });
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLendInfo((current: LendInfoType) => ({
@@ -30,12 +50,13 @@ function AddLendListForm() {
       return;
     }
 
-    const fetchBookResponse = await fetchLendListByBookId(lendInfo.bookId);
-    const fetchListData: LendListType = fetchBookResponse.data.data.lists;
+    const { data } = await refetch();
+    const fetchListData: LendListType = data?.data.data.lists;
+    console.log(fetchListData);
 
     if (fetchListData.length > 0) {
       if (lendInfo.memberId === "") {
-        updateLendList(fetchListData[0].id);
+        updateReturnDateMutation.mutate(fetchListData[0].id);
         clearInput();
         return;
       } else {
@@ -51,14 +72,8 @@ function AddLendListForm() {
       }
     }
 
-    try {
-      const response = await addLendList(lendInfo);
-
-      setLendLists((current) => [...current, response.data.data.lists[0]]);
-      clearInput();
-    } catch (error) {
-      console.error(error);
-    }
+    addLendListMutation.mutate(lendInfo);
+    clearInput();
   };
 
   const clearInput = () => {
