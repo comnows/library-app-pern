@@ -2,16 +2,17 @@ import { useState } from "react";
 import { fetchLendLists } from "../../api";
 // import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
-import UpdateButton from "../general/form/UpdateButton";
-import DeleteButton from "../general/form/DeleteButton";
+import UpdateButton from "./UpdateButton";
+import DeleteButton from "../general/button/DeleteButton";
 import ListPageButton from "./ListPageButton";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { LendListsQueries } from "../../lib/types";
+import { FetchQueriesType } from "../../lib/types";
+import { useDeleteMutation } from "./mutations";
 
 function LendList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [queryObject, setQueryObject] = useState<LendListsQueries>({
+  const [queryObject, setQueryObject] = useState<FetchQueriesType>({
     id: 0,
   });
 
@@ -20,6 +21,12 @@ function LendList() {
     queryFn: () => fetchLendLists(queryObject),
     placeholderData: keepPreviousData,
   });
+
+  const deleteMutation = useDeleteMutation();
+
+  const handleDelete = (id: number) => {
+    deleteMutation.mutate(id);
+  };
 
   const handlePrevClick = async (id: number) => {
     console.log(id);
@@ -69,7 +76,7 @@ function LendList() {
                 </td>
                 <td className="py-3 px-5">
                   {!lendList.returned_date && <UpdateButton id={lendList.id} />}
-                  <DeleteButton id={lendList.id} />
+                  <DeleteButton onClick={() => handleDelete(lendList.id)} />
                 </td>
               </tr>
             );

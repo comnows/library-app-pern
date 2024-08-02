@@ -1,5 +1,5 @@
 import { LuFileClock } from "react-icons/lu";
-import { useUpdateReturnDateMutation } from "../../lend/mutations";
+import { useUpdateReturnDateMutation } from "./mutations";
 
 type UpdateButtonProps = {
   id: number;

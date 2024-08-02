@@ -4,10 +4,21 @@ export type ChildrenType = {
   children: React.ReactNode;
 };
 
-export type LendListsQueries = {
+export type FetchQueriesType = {
   id?: number;
   option?: "prev" | "next";
 };
+
+export type BookType = {
+  id: number;
+  name: string;
+  class_name: string;
+  year: number;
+  writer: string;
+  publisher: string;
+  create_at: Date;
+  count?: number;
+}[];
 
 export type LendListType = {
   id: number;
