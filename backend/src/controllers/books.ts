@@ -1,10 +1,51 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { query } from "../db";
+import { QueryObjectType } from "../libs/types";
 
 const getAllBooks = async (req: Request, res: Response) => {
+  const { id, option } = req.query;
+  const queryObject: QueryObjectType = { orderBy: "ASC", operator: ">" };
+
+  if (option) {
+    queryObject.orderBy = option === "prev" ? "DESC" : "ASC";
+    queryObject.operator = option === "prev" ? "<" : ">";
+  }
+
+  const queryString = `WITH PageResult AS (
+                      SELECT
+                        book.id,
+                        book.name,
+                        book_classes.name AS class_name,
+                        book.year,
+                        book.writer,
+                        book.publisher,
+                        book.create_at
+                      FROM book
+                      JOIN book_classes ON book.classes = book_classes.id
+                      WHERE book.id ${queryObject.operator} COALESCE($1, 0)
+                      ORDER BY book.id ${queryObject.orderBy}
+                      LIMIT 5
+                      ),
+                      CountNext AS (
+                        SELECT COUNT(*) AS count
+                        FROM book
+                        WHERE book.id > (SELECT MIN(id) FROM PageResult)
+                      )
+                      SELECT
+                        pr.id,
+                        pr.name,
+                        pr.class_name,
+                        pr.year,
+                        pr.writer,
+                        pr.publisher,
+                        pr.create_at,
+                        cn.count
+                      FROM PageResult pr
+                      CROSS JOIN CountNext cn
+                      ORDER BY pr.id`;
   try {
-    const results = await query("SELECT * FROM book");
+    const results = await query(queryString, [id]);
 
     res.status(StatusCodes.OK).json({
       data: {

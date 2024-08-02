@@ -1,11 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { query } from "../db";
-
-type QueryObjectType = {
-  orderBy: "DESC" | "ASC";
-  operator: "<" | ">";
-};
+import { QueryObjectType } from "../libs/types";
 
 const getAllLendLists = async (req: Request, res: Response) => {
   const { id, option } = req.query;
