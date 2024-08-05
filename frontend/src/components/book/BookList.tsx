@@ -6,8 +6,10 @@ import { formatDate } from "../../utils/DateFormat";
 import { useDeleteBookMutation } from "./mutations";
 import EditButton from "../general/button/EditButton";
 import DeleteButton from "../general/button/DeleteButton";
+import ListPageButton from "../general/button/ListPageButton";
 
 function BookList() {
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [queryObject, setQueryObject] = useState<FetchQueriesType>({
     id: 0,
   });
@@ -22,6 +24,22 @@ function BookList() {
 
   const handleDelete = (id: number) => {
     deleteBookMutation.mutate(id);
+  };
+
+  const handlePrevClick = (id: number) => {
+    setCurrentPage((current) => current - 1);
+    setQueryObject({
+      id: id,
+      option: "prev",
+    });
+  };
+
+  const handleNextClick = (id: number) => {
+    setCurrentPage((current) => current + 1);
+    setQueryObject({
+      id: id,
+      option: "prev",
+    });
   };
 
   return (
@@ -60,12 +78,18 @@ function BookList() {
         </tbody>
       </table>
       <div className="flex justify-end gap-2 mt-2">
-        <button onClick={() => setQueryObject({ id: 0, option: "prev" })}>
-          Prev
-        </button>
-        <button onClick={() => setQueryObject({ id: 0, option: "next" })}>
-          Next
-        </button>
+        {currentPage > 1 && (
+          <ListPageButton
+            name="Prev"
+            onClick={() => data && handlePrevClick(data[0].id)}
+          />
+        )}
+        {data && data[0].count && data[0].count > 5 && (
+          <ListPageButton
+            name="Next"
+            onClick={() => data && handleNextClick(data[data?.length - 1].id)}
+          />
+        )}
       </div>
     </div>
   );

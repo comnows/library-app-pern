@@ -1,4 +1,4 @@
-import { ButtonType } from "../../lib/types";
+import { ButtonType } from "../../../lib/types";
 
 function ListPageButton({ name, onClick }: ButtonType) {
   return (

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { fetchLendLists } from "../../api";
-// import { useLendListContext } from "../../hooks/UseLendListContext";
 import { formatDate } from "../../utils/DateFormat";
 import UpdateButton from "./UpdateButton";
 import DeleteButton from "../general/button/DeleteButton";
-import ListPageButton from "./ListPageButton";
+import ListPageButton from "../general/button/ListPageButton";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FetchQueriesType } from "../../lib/types";
 import { useDeleteMutation } from "./mutations";
@@ -29,7 +28,6 @@ function LendList() {
   };
 
   const handlePrevClick = async (id: number) => {
-    console.log(id);
     setCurrentPage((current) => current - 1);
     setQueryObject({
       id: id,
@@ -38,7 +36,6 @@ function LendList() {
   };
 
   const handleNextClick = async (id: number) => {
-    console.log(id);
     setCurrentPage((current) => current + 1);
     setQueryObject({
       id: id,
