@@ -14,7 +14,7 @@ function FormInput({ name, type, placeholder, value, onChange }: InputProps) {
       placeholder={placeholder}
       value={value ? value : ""}
       onChange={onChange}
-      className="w-full border-2 rounded-xl outline-none outline-offset-0 px-4 py-2 focus:outline focus:outline-green-500"
+      className="w-full border-2 rounded-xl outline-none outline-offset-2 px-4 py-2 focus:outline focus:outline-green-500"
     />
   );
 }

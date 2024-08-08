@@ -20,6 +20,19 @@ export type BookType = {
   count?: number;
 }[];
 
+export type BookInfoType = {
+  name?: string;
+  classes?: number | null;
+  year?: number | null;
+  writer?: string;
+  publisher?: string;
+};
+
+export type BookInfoFormType = Omit<BookInfoType, "classes" | "year"> & {
+  classes?: string;
+  year?: string;
+};
+
 export type LendListType = {
   id: number;
   book_name: string;
