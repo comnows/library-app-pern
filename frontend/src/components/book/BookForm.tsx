@@ -2,6 +2,7 @@ import FormInput from "../general/form/FormInput";
 import { BookInfoFormType } from "../../lib/types";
 
 type BookFormProps = BookInfoFormType & {
+  formName: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
@@ -12,12 +13,13 @@ function BookForm({
   year = "",
   writer = "",
   publisher = "",
+  formName = "",
   onChange,
   onSubmit,
 }: BookFormProps) {
   return (
     <form className="flex flex-col gap-3">
-      <legend className="text-lg font-semibold">Edit book</legend>
+      <legend className="text-lg font-semibold">{formName}</legend>
       <FormInput
         name="name"
         type="text"

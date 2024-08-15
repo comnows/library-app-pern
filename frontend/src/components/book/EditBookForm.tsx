@@ -1,22 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchBook } from "../../api";
 import BookForm from "./BookForm";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BookInfoFormType, BookInfoType } from "../../lib/types";
 import { useUpdateBookMutation } from "./mutations";
+import { useBookContext } from "../../hooks/UseBookContext";
 
 type EditBookFormProps = {
   id: number;
+  onClose: () => void;
 };
 
-function EditBookForm({ id }: EditBookFormProps) {
-  const [bookInfo, setBookInfo] = useState<BookInfoFormType>({
-    name: "",
-    classes: "",
-    year: "",
-    writer: "",
-    publisher: "",
-  });
+function EditBookForm({ id, onClose }: EditBookFormProps) {
+  const { bookInfo, setBookInfo, onInputChange, clearInput } = useBookContext();
 
   const { data } = useQuery({
     queryKey: ["book", id],
@@ -32,17 +28,7 @@ function EditBookForm({ id }: EditBookFormProps) {
       year: `${data?.year}`,
     };
     setBookInfo(newData);
-  }, [data]);
-
-  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-
-    setBookInfo((current) => ({
-      ...current,
-      [event.target.name]: event.target.value,
-    }));
-    console.log(bookInfo);
-  };
+  }, [data, setBookInfo]);
 
   const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
@@ -54,6 +40,8 @@ function EditBookForm({ id }: EditBookFormProps) {
     };
 
     updateBookMutation.mutate({ id, newData });
+    clearInput();
+    onClose();
   };
 
   return (
@@ -63,6 +51,7 @@ function EditBookForm({ id }: EditBookFormProps) {
       year={bookInfo.year}
       writer={bookInfo.writer}
       publisher={bookInfo.publisher}
+      formName="Edit book"
       onChange={onInputChange}
       onSubmit={onSubmit}
     />

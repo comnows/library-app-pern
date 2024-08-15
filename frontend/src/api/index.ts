@@ -4,6 +4,7 @@ import {
   FetchQueriesType,
   LendListType,
   BookType,
+  BookInfoType,
 } from "../lib/types";
 
 const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
@@ -31,4 +32,9 @@ export const fetchBooks = ({
   api
     .get("/books", { params: { id: id, option: option } })
     .then((response) => response.data.data.books);
+export const addBook = (bookInfo: BookInfoType) => api.post("/books", bookInfo);
+export const fetchBook = (id: number): Promise<BookInfoType> =>
+  api.get(`/books/${id}`).then((response) => response.data.data.books[0]);
+export const updateBook = (id: number, newData: BookInfoType) =>
+  api.patch(`/books/${id}`, newData);
 export const deleteBook = (id: number) => api.delete(`/books/${id}`);
