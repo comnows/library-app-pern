@@ -1,5 +1,7 @@
 import FormInput from "../general/form/FormInput";
 import { BookInfoFormType } from "../../lib/types";
+import { ChangeEvent } from "react";
+import { useBookContext } from "../../hooks/UseBookContext";
 
 type BookFormProps = BookInfoFormType & {
   formName: string;
@@ -17,6 +19,15 @@ function BookForm({
   onChange,
   onSubmit,
 }: BookFormProps) {
+  const { setBookInfo } = useBookContext();
+
+  const onSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setBookInfo((current) => ({
+      ...current,
+      classes: event.target.value,
+    }));
+  };
+
   return (
     <form className="flex flex-col gap-3">
       <legend className="text-lg font-semibold">{formName}</legend>
@@ -29,13 +40,24 @@ function BookForm({
       />
       <div className="flex gap-3">
         <div className="flex-1">
-          <FormInput
+          <select
             name="classes"
-            type="number"
-            placeholder="class"
+            id="classes"
+            className="w-full border-2 rounded-xl outline-none outline-offset-2 px-2 py-2 focus:outline focus:outline-green-500"
+            onChange={onSelectChange}
             value={classes}
-            onChange={onChange}
-          />
+          >
+            <option value="000">000</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+            <option value="600">600</option>
+            <option value="700">700</option>
+            <option value="800">800</option>
+            <option value="900">900</option>
+          </select>
         </div>
         <div className="flex-1">
           <FormInput
