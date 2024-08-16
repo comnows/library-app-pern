@@ -31,7 +31,7 @@ const getAllLendLists = async (req: Request, res: Response) => {
                         CountNext AS (
                           SELECT COUNT(*) AS count
                           FROM lend_list
-                          WHERE lend_list.id > (SELECT MIN(id) FROM PageResult)
+                          WHERE lend_list.id >= (SELECT MIN(id) FROM PageResult)
                         )
                         SELECT
                           pr.id,

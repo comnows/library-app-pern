@@ -30,7 +30,7 @@ const getAllBooks = async (req: Request, res: Response) => {
                       CountNext AS (
                         SELECT COUNT(*) AS count
                         FROM book
-                        WHERE book.id > (SELECT MIN(id) FROM PageResult)
+                        WHERE book.id >= (SELECT MIN(id) FROM PageResult)
                       )
                       SELECT
                         pr.id,
