@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchBooks } from "../../api";
 import { FetchQueriesType } from "../../lib/types";
@@ -22,10 +22,6 @@ function BookList({ onEdit }: BookListProps) {
     queryKey: ["books", queryObject],
     queryFn: () => fetchBooks(queryObject),
     placeholderData: keepPreviousData,
-  });
-
-  useEffect(() => {
-    if (data) console.log(data[0].count);
   });
 
   const deleteBookMutation = useDeleteBookMutation();
@@ -97,7 +93,7 @@ function BookList({ onEdit }: BookListProps) {
               onClick={() => data && handlePrevClick(data[0].id)}
             />
           )}
-          {data && data[0].count && data[0].count > 5 && (
+          {!data ? null : !data.length ? null : data[0].count! <= 5 ? null : (
             <ListPageButton
               name="Next"
               onClick={() => data && handleNextClick(data[data.length - 1].id)}

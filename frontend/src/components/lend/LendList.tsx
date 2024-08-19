@@ -89,7 +89,7 @@ function LendList() {
             }}
           />
         )}
-        {data && data[0].count && data[0].count > 5 && (
+        {!data ? null : !data.length ? null : data[0].count! <= 5 ? null : (
           <ListPageButton
             name="Next"
             onClick={() => {
