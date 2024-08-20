@@ -4,6 +4,9 @@ import { FetchQueriesType } from "../../lib/types";
 import { fetchMembers } from "../../api";
 import { formatDate } from "../../utils/DateFormat";
 import ListPageButton from "../general/button/ListPageButton";
+import { useDeleteMemberMutation } from "./mutations";
+import DeleteButton from "../general/button/DeleteButton";
+import EditButton from "../general/button/EditButton";
 
 function MemberList() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -16,6 +19,12 @@ function MemberList() {
     queryFn: () => fetchMembers(queryObject),
     placeholderData: keepPreviousData,
   });
+
+  const deleteMemberMutation = useDeleteMemberMutation();
+
+  const handleDelete = (id: number) => {
+    deleteMemberMutation.mutate(id);
+  };
 
   const handlePrevClick = (id: number) => {
     setCurrentPage((current) => current - 1);
@@ -61,12 +70,8 @@ function MemberList() {
                   </td>
                   <td className="py-3 px-5">{formatDate(member.created_at)}</td>
                   <td className="flex gap-2 py-3 px-5">
-                    {/* <EditButton
-                      onClick={() => {
-                        onEdit(book.id);
-                      }}
-                    />
-                    <DeleteButton onClick={() => handleDelete(book.id)} /> */}
+                    <EditButton onClick={() => {}} />
+                    <DeleteButton onClick={() => handleDelete(member.id)} />
                   </td>
                 </tr>
               );
