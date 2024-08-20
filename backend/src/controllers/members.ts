@@ -1,10 +1,55 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { query } from "../db";
+import { QueryObjectType } from "../libs/types";
 
 const getAllMemebers = async (req: Request, res: Response) => {
+  const { id, option } = req.query;
+  const queryObject: QueryObjectType = { orderBy: "ASC", operator: ">" };
+
+  if (option) {
+    queryObject.orderBy = option === "prev" ? "DESC" : "ASC";
+    queryObject.operator = option === "prev" ? "<" : ">";
+  }
+
+  const queryString = `WITH PageResult AS (
+    SELECT
+      member.id,
+      member.personal_id,
+      member.first_name,
+      member.last_name,
+      member.email,
+      member.phone_number,
+      member.gender,
+      member.date_of_birth,
+      member.created_at
+    FROM member
+    WHERE member.id ${queryObject.operator} COALESCE($1, 0)
+    ORDER BY member.id ${queryObject.orderBy}
+    LIMIT 15
+    ),
+    CountNext AS (
+      SELECT COUNT(*) AS count
+      FROM member
+      WHERE member.id >= (SELECT MIN(id) FROM PageResult)
+    )
+    SELECT
+      pr.id,
+      pr.personal_id,
+      pr.first_name,
+      pr.last_name,
+      pr.email,
+      pr.phone_number,
+      pr.gender,
+      pr.date_of_birth,
+      pr.created_at,
+      cn.count
+    FROM PageResult pr
+    CROSS JOIN CountNext cn
+    ORDER BY pr.id`;
+
   try {
-    const results = await query("SELECT * FROM member");
+    const results = await query(queryString, [id]);
 
     res.status(StatusCodes.OK).json({
       data: {
