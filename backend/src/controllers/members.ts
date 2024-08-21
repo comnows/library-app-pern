@@ -88,12 +88,27 @@ const getMember = async (req: Request, res: Response) => {
 };
 
 const createMember = async (req: Request, res: Response) => {
-  const { id, firstname, lastname, email, phone, gender, dateOfBirth } =
-    req.body;
+  const {
+    personal_id,
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    gender,
+    date_of_birth,
+  } = req.body;
   try {
     const results = await query(
-      "INSERT INTO member(id, first_name, last_name, email, phone_number, gender, date_of_birth) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [id, firstname, lastname, email, phone, gender, dateOfBirth],
+      "INSERT INTO member(personal_id, first_name, last_name, email, phone_number, gender, date_of_birth) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [
+        personal_id,
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        gender,
+        date_of_birth,
+      ],
     );
 
     console.log(results);
