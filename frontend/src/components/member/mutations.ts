@@ -1,5 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteMember } from "../../api";
+import { addMember, deleteMember } from "../../api";
+import { MemberInfoType } from "../../lib/types";
+
+export function useAddMemberMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (memberInfo: MemberInfoType) => addMember(memberInfo),
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log(error);
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["members"] });
+      }
+    },
+  });
+}
 
 export function useDeleteMemberMutation() {
   const queryClient = useQueryClient();

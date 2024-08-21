@@ -85,7 +85,7 @@ function MemberList() {
               onClick={() => data && handlePrevClick(data[0].id)}
             />
           )}
-          {data && data[0].count && data[0].count > 5 && (
+          {data && data[0].count && data[0].count > 15 && (
             <ListPageButton
               name="Next"
               onClick={() => data && handleNextClick(data[data.length - 1].id)}

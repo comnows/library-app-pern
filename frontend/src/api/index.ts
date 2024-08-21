@@ -6,6 +6,7 @@ import {
   BookType,
   BookInfoType,
   MemberType,
+  MemberInfoType,
 } from "../lib/types";
 
 const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
@@ -47,3 +48,6 @@ export const fetchMembers = ({
   api
     .get("/members", { params: { id: id, option: option } })
     .then((response) => response.data.data.members);
+export const addMember = (memberInfo: MemberInfoType) =>
+  api.post("/members", memberInfo);
+export const deleteMember = (id: number) => api.delete(`/members/${id}`);

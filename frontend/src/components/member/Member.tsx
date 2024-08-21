@@ -1,10 +1,20 @@
+import { useRef } from "react";
+import AddMemberModal from "./AddMemberModal";
 import MemberList from "./MemberList";
+import MemberContextProvider from "../../contexts/MemberContext";
 
 function Member() {
-  const openAddModal = () => {};
+  const addModalRef = useRef<HTMLDialogElement | null>(null);
+  const openAddModal = () => {
+    addModalRef.current?.showModal();
+  };
+
+  const closeAddModal = () => {
+    addModalRef.current?.close();
+  };
 
   return (
-    <>
+    <MemberContextProvider>
       <h1 className="text-xl font-semibold mt-6 ml-6 py-5">Member List</h1>
       <div className="flex justify-center">
         <button
@@ -15,7 +25,8 @@ function Member() {
         </button>
       </div>
       <MemberList />
-    </>
+      <AddMemberModal onClose={closeAddModal} ref={addModalRef} />
+    </MemberContextProvider>
   );
 }
 

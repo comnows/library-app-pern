@@ -46,6 +46,16 @@ export type MemberType = {
   count?: number;
 }[];
 
+export type MemberInfoType = {
+  personal_id?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  phone_number?: string;
+  gender?: string;
+  date_of_birth?: Date;
+};
+
 export type LendListType = {
   id: number;
   book_name: string;
