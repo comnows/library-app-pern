@@ -23,6 +23,7 @@ function Book() {
   };
 
   const closeModal = () => {
+    setSelectedBook(-1);
     editModalRef.current?.close();
   };
 

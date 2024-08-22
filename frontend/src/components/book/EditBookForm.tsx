@@ -17,17 +17,20 @@ function EditBookForm({ id, onClose }: EditBookFormProps) {
   const { data } = useQuery({
     queryKey: ["book", id],
     queryFn: () => fetchBook(id),
+    enabled: id > -1,
   });
 
   const updateBookMutation = useUpdateBookMutation();
 
   useEffect(() => {
-    const newData: BookInfoFormType = {
-      ...data,
-      classes: `${data?.classes}`,
-      year: `${data?.year}`,
-    };
-    setBookInfo(newData);
+    if (data) {
+      const newData: BookInfoFormType = {
+        ...data,
+        classes: `${data?.classes}`,
+        year: `${data?.year}`,
+      };
+      setBookInfo(newData);
+    }
   }, [data, setBookInfo]);
 
   const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
