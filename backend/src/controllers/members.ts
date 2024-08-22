@@ -129,19 +129,26 @@ const createMember = async (req: Request, res: Response) => {
 };
 
 const updateMember = async (req: Request, res: Response) => {
-  const { id, firstname, lastname, email, phone, gender, dateOfBirth } =
-    req.body;
+  const {
+    personal_id,
+    first_name,
+    last_name,
+    email,
+    phone_number,
+    gender,
+    date_of_birth,
+  } = req.body;
   try {
     const results = await query(
-      "UPDATE member SET id = $1, first_name = $2, last_name = $3, email = $4, phone_number = $5, gender = $6, date_of_birth = $7 WHERE id = $8 RETURNING *",
+      "UPDATE member SET personal_id = $1, first_name = $2, last_name = $3, email = $4, phone_number = $5, gender = $6, date_of_birth = $7 WHERE id = $8 RETURNING *",
       [
-        id,
-        firstname,
-        lastname,
+        personal_id,
+        first_name,
+        last_name,
         email,
-        phone,
+        phone_number,
         gender,
-        dateOfBirth,
+        date_of_birth,
         req.params.id,
       ],
     );
