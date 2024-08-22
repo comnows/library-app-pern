@@ -9,21 +9,21 @@ function Sidebar() {
       <div className="flex flex-col p-3">
         <SidebarLink path="/">
           <SidebarIcon>
+            <FaList />
+          </SidebarIcon>
+          <p>Lend List</p>
+        </SidebarLink>
+        <SidebarLink path="/book">
+          <SidebarIcon>
             <IoBookOutline />
           </SidebarIcon>
           <p>Book List</p>
         </SidebarLink>
-        <SidebarLink path="/">
+        <SidebarLink path="/member">
           <SidebarIcon>
             <IoPersonOutline />
           </SidebarIcon>
           <p>Member List</p>
-        </SidebarLink>
-        <SidebarLink path="/lend">
-          <SidebarIcon>
-            <FaList />
-          </SidebarIcon>
-          <p>Lend List</p>
         </SidebarLink>
       </div>
     </div>
