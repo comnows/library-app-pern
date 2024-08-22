@@ -93,7 +93,7 @@ function BookList({ onEdit }: BookListProps) {
               onClick={() => data && handlePrevClick(data[0].id)}
             />
           )}
-          {!data ? null : !data.length ? null : data[0].count! <= 5 ? null : (
+          {!data ? null : !data.length ? null : data[0].count! <= 15 ? null : (
             <ListPageButton
               name="Next"
               onClick={() => data && handleNextClick(data[data.length - 1].id)}

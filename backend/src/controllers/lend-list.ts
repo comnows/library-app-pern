@@ -26,7 +26,7 @@ const getAllLendLists = async (req: Request, res: Response) => {
                         JOIN member ON lend_list.member_id = member.id 
                         WHERE lend_list.id ${queryObject.operator} COALESCE($1, 0) 
                         ORDER BY lend_list.id ${queryObject.orderBy} 
-                        LIMIT 5
+                        LIMIT 15
                         ),
                         CountNext AS (
                           SELECT COUNT(*) AS count

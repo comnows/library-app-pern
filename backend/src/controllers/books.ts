@@ -25,7 +25,7 @@ const getAllBooks = async (req: Request, res: Response) => {
                       JOIN book_classes ON book.classes = book_classes.id
                       WHERE book.id ${queryObject.operator} COALESCE($1, 0)
                       ORDER BY book.id ${queryObject.orderBy}
-                      LIMIT 5
+                      LIMIT 15
                       ),
                       CountNext AS (
                         SELECT COUNT(*) AS count
