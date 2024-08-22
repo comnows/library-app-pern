@@ -1,16 +1,31 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import AddMemberModal from "./AddMemberModal";
 import MemberList from "./MemberList";
 import MemberContextProvider from "../../contexts/MemberContext";
+import EditMemberModal from "./EditMemberModal";
 
 function Member() {
   const addModalRef = useRef<HTMLDialogElement | null>(null);
+  const editModalRef = useRef<HTMLDialogElement | null>(null);
+
+  const [selectedMember, setSelectedMember] = useState<number | null>(null);
+
   const openAddModal = () => {
     addModalRef.current?.showModal();
   };
 
   const closeAddModal = () => {
     addModalRef.current?.close();
+  };
+
+  const openEditModal = (id: number) => {
+    editModalRef.current?.showModal();
+    setSelectedMember(id);
+  };
+
+  const closeEditModal = () => {
+    setSelectedMember(-1);
+    editModalRef.current?.close();
   };
 
   return (
@@ -24,8 +39,13 @@ function Member() {
           Add new member
         </button>
       </div>
-      <MemberList />
+      <MemberList onEdit={openEditModal} />
       <AddMemberModal onClose={closeAddModal} ref={addModalRef} />
+      <EditMemberModal
+        selectedMember={selectedMember}
+        onClose={closeEditModal}
+        ref={editModalRef}
+      />
     </MemberContextProvider>
   );
 }

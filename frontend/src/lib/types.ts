@@ -9,6 +9,11 @@ export type FetchQueriesType = {
   option?: "prev" | "next";
 };
 
+export type EditFormProps = {
+  id: number;
+  onClose: () => void;
+};
+
 export type BookType = {
   id: number;
   name: string;

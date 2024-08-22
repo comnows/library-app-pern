@@ -8,7 +8,11 @@ import { useDeleteMemberMutation } from "./mutations";
 import DeleteButton from "../general/button/DeleteButton";
 import EditButton from "../general/button/EditButton";
 
-function MemberList() {
+type MemberListProps = {
+  onEdit: (id: number) => void;
+};
+
+function MemberList({ onEdit }: MemberListProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [queryObject, setQueryObject] = useState<FetchQueriesType>({
     id: 0,
@@ -70,7 +74,11 @@ function MemberList() {
                   </td>
                   <td className="py-3 px-5">{formatDate(member.created_at)}</td>
                   <td className="flex gap-2 py-3 px-5">
-                    <EditButton onClick={() => {}} />
+                    <EditButton
+                      onClick={() => {
+                        onEdit(member.id);
+                      }}
+                    />
                     <DeleteButton onClick={() => handleDelete(member.id)} />
                   </td>
                 </tr>

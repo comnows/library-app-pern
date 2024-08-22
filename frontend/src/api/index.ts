@@ -50,4 +50,8 @@ export const fetchMembers = ({
     .then((response) => response.data.data.members);
 export const addMember = (memberInfo: MemberInfoType) =>
   api.post("/members", memberInfo);
+export const fetchMember = (id: number): Promise<MemberInfoType> =>
+  api.get(`/members/${id}`).then((response) => response.data.data.members[0]);
+export const updateMember = (id: number, newData: MemberInfoType) =>
+  api.patch(`/members/${id}`, newData);
 export const deleteMember = (id: number) => api.delete(`/members/${id}`);
