@@ -44,42 +44,54 @@ function LendList() {
   };
 
   return (
-    <div className="mx-6 mt-6">
-      <table className="w-full rounded-t-xl overflow-hidden">
-        <thead className="bg-green-500">
-          <tr className="text-white text-left">
-            <th className="py-3 px-5">No.</th>
-            <th className="py-3 px-5">Book name</th>
-            <th className="py-3 px-5">Member name</th>
-            <th className="py-3 px-5">Lend date</th>
-            <th className="py-3 px-5">Due date</th>
-            <th className="py-3 px-5">Return date</th>
-            <th className="py-3 px-5">Options</th>
-          </tr>
-        </thead>
-        <tbody className="border">
-          {data?.map((lendList) => {
-            return (
-              <tr key={lendList.id} className="border-b hover:bg-black/5">
-                <td className="py-3 px-5">{lendList.id}</td>
-                <td className="py-3 px-5">{lendList.book_name}</td>
-                <td className="py-3 px-5">{`${lendList.first_name} ${lendList.last_name}`}</td>
-                <td className="py-3 px-5">{formatDate(lendList.created_at)}</td>
-                <td className="py-3 px-5">{formatDate(lendList.due_date)}</td>
-                <td className="py-3 px-5">
-                  {lendList.returned_date
-                    ? formatDate(lendList.returned_date)
-                    : "-"}
-                </td>
-                <td className="py-3 px-5">
-                  {!lendList.returned_date && <UpdateButton id={lendList.id} />}
-                  <DeleteButton onClick={() => handleDelete(lendList.id)} />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+    <>
+      <div className="mx-6 mt-6 overflow-x-auto">
+        <table className="w-full rounded-t-xl overflow-hidden">
+          <thead className="bg-green-500">
+            <tr className="text-white text-left">
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">No.</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Book name</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Member name</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Lend date</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Due date</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Return date</th>
+              <th className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">Options</th>
+            </tr>
+          </thead>
+          <tbody className="border">
+            {data?.map((lendList) => {
+              return (
+                <tr key={lendList.id} className="border-b hover:bg-black/5">
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {lendList.id}
+                  </td>
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {lendList.book_name}
+                  </td>
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">{`${lendList.first_name} ${lendList.last_name}`}</td>
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {formatDate(lendList.created_at)}
+                  </td>
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {formatDate(lendList.due_date)}
+                  </td>
+                  <td className="py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {lendList.returned_date
+                      ? formatDate(lendList.returned_date)
+                      : "-"}
+                  </td>
+                  <td className="flex gap-2 py-2 lg:py-3 px-2 md:px-3 lg:px-5">
+                    {!lendList.returned_date && (
+                      <UpdateButton id={lendList.id} />
+                    )}
+                    <DeleteButton onClick={() => handleDelete(lendList.id)} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <div className="flex justify-end gap-2 mt-2">
         {currentPage > 1 && (
           <ListPageButton
@@ -98,7 +110,7 @@ function LendList() {
           />
         )}
       </div>
-    </div>
+    </>
   );
 }
 
