@@ -102,7 +102,7 @@ function AddLendListForm() {
           onChange={onInputChange}
         />
       </div>
-      <div className="flex-none w-[200px]">
+      <div className="flex-1 md:flex-none md:w-[200px]">
         <FormButton name="Confirm" onClick={handleAddClick} />
       </div>
     </div>
