@@ -34,7 +34,7 @@ export const BookContext = createContext<BookContextType>(bookContxtState);
 function BookContextProvider({ children }: ChildrenType) {
   const [bookInfo, setBookInfo] = useState<BookInfoFormType>({
     name: "",
-    classes: "",
+    classes: "000",
     year: "",
     writer: "",
     publisher: "",
@@ -52,7 +52,7 @@ function BookContextProvider({ children }: ChildrenType) {
   const clearInput = () => {
     setBookInfo({
       name: "",
-      classes: "",
+      classes: "000",
       year: "",
       writer: "",
       publisher: "",
