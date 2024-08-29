@@ -9,7 +9,9 @@ import {
   MemberInfoType,
 } from "../lib/types";
 
-const api = axios.create({ baseURL: "http://localhost:5000/api/v1" });
+const api = axios.create({
+  baseURL: "https://library-pern-backend.vercel.app/api/v1",
+});
 
 export const fetchLendLists = ({
   id,
