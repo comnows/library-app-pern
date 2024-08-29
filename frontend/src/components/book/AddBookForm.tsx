@@ -17,7 +17,6 @@ function AddBookForm({ onClose }: AddBookFormProps) {
 
     const newData: BookInfoType = {
       ...bookInfo,
-      classes: Number(bookInfo.classes),
       year: Number(bookInfo.year),
     };
 

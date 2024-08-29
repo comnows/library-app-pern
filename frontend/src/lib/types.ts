@@ -27,14 +27,13 @@ export type BookType = {
 
 export type BookInfoType = {
   name?: string;
-  classes?: number | null;
+  classes?: string;
   year?: number | null;
   writer?: string;
   publisher?: string;
 };
 
-export type BookInfoFormType = Omit<BookInfoType, "classes" | "year"> & {
-  classes?: string;
+export type BookInfoFormType = Omit<BookInfoType, "year"> & {
   year?: string;
 };
 
